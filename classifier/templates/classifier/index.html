@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Classification</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+</head>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffffff">
+	<img src="http://move78.in/img/logo-dark.png" style="max-height: 60px">
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	
+</nav>
+<body style="background-color: #BDBDBD;font-family: 'Open Sans',sans-serif;">
+	<div style="padding:100px" >
+		<div class="card-body">
+			
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+rel="stylesheet">
+<div class="modal" id="clfmodal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Classify with category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="para-body">Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+         <form id="form_id" action="/training/?url={{ uploaded_url }}" method="post">
+         	{% csrf_token %}
+         	<input id="id" type="hidden" name="id" value="">
+        	<input type="submit" class="btn btn-primary" value="OK" onclick="formsubmit();">
+    </form>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card" >
+	<div class="card-body">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="jumbotron jumbotron-fluid">
+					<div class="container">
+						<h1 class="display-4">Image Classification</h1>
+						<h3 class="display-8">Upload Aadhar|Pancard|Voterid|Passport and get a label for the uploaded image </p>
+						 
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12">
+				<div style="margin-top: 50px">
+					<center>
+					<form  action="" method="post" enctype="multipart/form-data">
+							{% csrf_token %}
+							<label for="file-upload" class="custom-file-upload" style="width: 100%;font-size: 25px">
+								<img style="height: 60px" src="http://icons.iconarchive.com/icons/icons8/ios7/512/Very-Basic-Upload-icon.png">
+								<p id="filename">Upload Image</p>
+								<input class="btn btn-outline-success" type="file" name="myfile">
+							</label>
+							
+							<br>
+							<button class="btn btn-outline-success" type="submit" id ="target">Upload</button>
+
+							<p style="font-size:30px;color: red"> {{result}} || {{conf}} </p>
+					</form>
+					{% if result == "aadharcard" %}
+					<button style="margin:8px" id="aadharcard" onclick="setmodalvalue(this.id)" class="btn btn-dark" data-toggle="modal" data-target="#clfmodal">aadharcard</button>
+					{% else %}
+					<button style="margin:8px" id="aadharcard" onclick="setmodalvalue(this.id)" class="btn btn-outline-dark" data-toggle="modal" data-target="#clfmodal">aadharcard</button>
+					{% endif %}
+                    {% if result == "pancard" %}
+					<button style="margin:8px" id="pancard" onclick="setmodalvalue(this.id)" class="btn btn-dark" data-toggle="modal" data-target="#clfmodal">pancard</button>
+					{% else %}
+					<button style="margin:8px" id="pancard" onclick="setmodalvalue(this.id)" class="btn btn-outline-dark" data-toggle="modal" data-target="#clfmodal">pancard</button>
+					{% endif %}
+					{% if result == "passport" %}
+					<button style="margin:8px" id="passport" onclick="setmodalvalue(this.id)" class="btn btn-dark" data-toggle="modal" data-target="#clfmodal">passport</button>
+					{% else %}
+					<button style="margin:8px" id="passport" onclick="setmodalvalue(this.id)" class="btn btn-outline-dark" data-toggle="modal" data-target="#clfmodal">passport</button>
+					{% endif %}
+					{% if result == "votercard" %}
+					<button style="margin:8px" id="votercard" onclick="setmodalvalue(this.id)" class="btn btn-dark" data-toggle="modal" data-target="#clfmodal">votercard</button>
+					{% else %}
+					<button style="margin:8px" id="votercard" onclick="setmodalvalue(this.id)" class="btn btn-outline-dark" data-toggle="modal" data-target="#clfmodal">votercard</button>
+					{% endif %}
+					{% if result == "vzjunk" %}
+					<button style="margin:8px" id="vzjunk" onclick="setmodalvalue(this.id)" class="btn btn-dark" data-toggle="modal" data-target="#clfmodal">vzjunk</button>
+					{% else %}
+					<button style="margin:8px" id="vzjunk" onclick="setmodalvalue(this.id)" class="btn btn-outline-dark" data-toggle="modal" data-target="#clfmodal">vzjunk</button>
+					{% endif %}
+					</center>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+	var selected_id = "";
+	function setmodalvalue(id){
+	selected_id = id;
+	document.getElementById('para-body').innerHTML="Are you sure you want to classify the image with " + id + " category?";
+}
+
+function formsubmit(){
+	$('#id').val(selected_id);
+	$('#form_id').submit();
+}
+</script>
+</body>
+</html>
